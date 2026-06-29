@@ -17,28 +17,28 @@
         </div>
       </header>
 
-      <div class="preview card">
-        <div class="viewfinder" id="viewfinder">
-          <video id="video" autoplay playsinline muted></video>
-          <div id="reticule" class="reticule" aria-hidden="true"></div>
+      <div class="viewfinder" id="viewfinder">
+        <video id="video" autoplay playsinline muted></video>
+        <div id="reticule" class="reticule" aria-hidden="true"></div>
+      </div>
+
+      <div id="hud-bottom">
+        <div id="status">Idle</div>
+        <div id="debug" class="small"></div>
+
+        <div class="controls">
+          <button id="start">Start camera</button>
+          <button id="stop" disabled>Stop camera</button>
+          <!-- <button id="clear">Clear stored products</button> -->
         </div>
       </div>
-
-      <div class="controls">
-        <button id="start">Start camera</button>
-        <button id="stop" disabled>Stop camera</button>
-        <button id="clear">Clear stored products</button>
-      </div>
-
-      <div id="status">Idle</div>
-      <div id="debug" class="small"></div>
 
       <div id="updateBanner" class="update-banner">
         <div>Update available. Reload to use the latest version.</div>
         <button id="reloadBtn">Reload</button>
       </div>
 
-      <div class="card">
+      <!-- <div class="card">
         <h2>Current product</h2>
         <div id="productInfo" class="small">No product scanned yet.</div>
       </div>
@@ -46,7 +46,7 @@
       <div class="card">
         <h2>Stored products</h2>
         <div id="storedProducts" class="small">No products stored yet.</div>
-      </div>
+      </div> -->
     </div>
 
     <script
