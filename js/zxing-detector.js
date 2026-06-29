@@ -4,7 +4,9 @@
  * @returns
  */
 export function zxingFactory(options) {
-  const detector = new ZXing.BrowserMultiFormatReader();
+  const hints = new Map();
+  hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, options.formats.map((format) => ZXing.BarcodeFormat[format.toUpperCase()]));
+  const detector = new ZXing.BrowserMultiFormatReader(hints);
   const detectFromVideo = async (video, callback) => {
     detector.decodeFromVideoContinuously(video, "", (result, error) => {
       if (result) {
@@ -29,16 +31,4 @@ export function zxingFactory(options) {
       detector.reset();
     },
   };
-}
-
-async function canvasToBlob(canvas) {
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject(new Error("Failed to convert canvas to blob."));
-      }
-    });
-  });
 }

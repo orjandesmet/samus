@@ -32,7 +32,6 @@ let detectorFacade = null;
 let scanTimeoutId = null;
 let lastHandled = null;
 let lastHandledTime = 0;
-let waitingWorker = null;
 
 const SCAN_STOP_TIMEOUT = 10 * 60 * 1000; // 10 minutes
 
@@ -166,7 +165,6 @@ async function startCamera() {
       video: { facingMode: "user" },
     });
     video.srcObject = stream;
-    // await video.play();
     setStatus("Camera started. Point at a barcode.");
     disableStartBtn();
 
