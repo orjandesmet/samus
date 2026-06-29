@@ -1,6 +1,6 @@
 const CACHE_VERSION = '1.0.0-beta.3';
 const CACHE_NAME = `barcode-shortcut-pwa-${CACHE_VERSION}`;
-const ASSETS = ['/', '/index.html', '/app.js', '/manifest.json', '/icon.svg'];
+const ASSETS = ['/', '/index.html', '/js/*.js', '/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
