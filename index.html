@@ -19,6 +19,9 @@
       .card{background:#fff;border-radius:16px;padding:1rem;margin-top:1rem;box-shadow:0 11px 30px rgba(0,0,0,.06)}
       .card h2{margin:0 0 .75rem;font-size:1rem}
       .preview{position:relative;border-radius:18px;overflow:hidden;background:#000}
+      .viewfinder{position:relative;overflow:hidden}
+      .reticule{position:absolute;pointer-events:none;box-sizing:border-box;border:2px solid rgba(77, 181, 122, 0.9);border-radius:14px;opacity:0;transition:opacity .18s ease, transform .18s ease;transform:scale(0.98);}
+      .reticule.active{opacity:1;transform:scale(1);}
       video{display:block;width:100%;height:auto;min-height:240px;background:#000}
       .product-item{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid #eee}
       .product-item:last-child{border-bottom:none}
@@ -37,7 +40,10 @@
       </header>
 
       <div class="preview card">
-        <video id="video" autoplay playsinline muted></video>
+        <div class="viewfinder" id="viewfinder">
+          <video id="video" autoplay playsinline muted></video>
+          <div id="reticule" class="reticule" aria-hidden="true"></div>
+        </div>
       </div>
 
       <div class="controls">

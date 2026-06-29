@@ -8,6 +8,7 @@ const productInfo = document.getElementById('productInfo');
 const storedProducts = document.getElementById('storedProducts');
 const updateBanner = document.getElementById('updateBanner');
 const reloadBtn = document.getElementById('reloadBtn');
+const reticule = document.getElementById('reticule');
 
 let stream = null;
 let detector = null;
@@ -17,7 +18,7 @@ let waitingWorker = null;
 let refreshing = false;
 
 const STORAGE_KEY = 'barcodeShortcutProducts';
-const CACHE_KEY = 'barcode-shortcut-pwa-v1';
+const CACHE_KEY = 'barcode-shortcut-pwa-v1.0';
 const SHORTCUT_NAME = 'Neo';
 
 function logDebug(message) {
@@ -91,6 +92,32 @@ function showProduct(name, code) {
   productInfo.textContent = `Product: ${name} (${code})`;
 }
 
+function drawReticule(boundingBox) {
+  if (!reticule || !boundingBox || !video.videoWidth || !video.videoHeight) {
+    hideReticule();
+    return;
+  }
+
+  const videoRect = video.getBoundingClientRect();
+  const scaleX = videoRect.width / video.videoWidth;
+  const scaleY = videoRect.height / video.videoHeight;
+  const left = Math.max(0, boundingBox.x * scaleX);
+  const top = Math.max(0, boundingBox.y * scaleY);
+  const width = Math.max(1, boundingBox.width * scaleX);
+  const height = Math.max(1, boundingBox.height * scaleY);
+
+  reticule.style.left = `${left}px`;
+  reticule.style.top = `${top}px`;
+  reticule.style.width = `${width}px`;
+  reticule.style.height = `${height}px`;
+  reticule.classList.add('active');
+}
+
+function hideReticule() {
+  if (!reticule) return;
+  reticule.classList.remove('active');
+}
+
 function openShortcut(name) {
   const text = encodeURIComponent(name);
   const url = `shortcuts://run-shortcut?name=${SHORTCUT_NAME}&input=text&text=${text}`;
@@ -141,10 +168,16 @@ async function scanLoop() {
       const bitmap = await createImageBitmap(canvas);
       const results = await detector.detect(bitmap);
       if (results.length) {
-        handleCode(results[0].rawValue || results[0].rawData);
+        const result = results[0];
+        console.log('Detected barcode:', result);
+        handleCode(result.rawValue || result.rawData);
+        drawReticule(result.boundingBox || result.boundingBox || null);
+      } else {
+        hideReticule();
       }
     } catch (error) {
       logDebug(`Scan error: ${error.message || error}`);
+      hideReticule();
     }
     rafId = requestAnimationFrame(step);
   }
