@@ -14,6 +14,7 @@ let stream = null;
 let detector = null;
 let rafId = null;
 let lastHandled = null;
+let lastHandledTime = 0;
 let waitingWorker = null;
 let refreshing = false;
 
@@ -127,9 +128,14 @@ function handleCode(rawCode) {
   if (!rawCode) return;
 
   const code = normalizeBarcode(rawCode);
-  if (!code || code === lastHandled) return;
+  const now = Date.now();
+  const oneHour = 60 * 60 * 1000;
+
+  if (!code) return;
+  if (code === lastHandled && now - lastHandledTime < oneHour) return;
 
   lastHandled = code;
+  lastHandledTime = now;
   setStatus(`Scanned: ${code}`);
 
   const products = loadProducts();
