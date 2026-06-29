@@ -1,3 +1,4 @@
+/*global ZXing*/
 /**
  * Creates a ZXing barcode reader instance.
  * @param {{formats: string[]}} options
