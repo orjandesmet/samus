@@ -6,8 +6,8 @@ export function createBarcodeDetectorFacade(options) {
 
   return {
     async detectFromVideo(video, callback) {
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
       canvas.width = video.videoWidth || 640;
       canvas.height = video.videoHeight || 480;
       await video.play();
@@ -19,9 +19,8 @@ export function createBarcodeDetectorFacade(options) {
           const bitmap = await createImageBitmap(video);
           const results = detector.detect(bitmap);
           callback(results);
-        }
-        catch (error) {
-          console.warn('Barcode detection error:', error);
+        } catch (error) {
+          console.warn("Barcode detection error:", error);
           throw error;
         }
         rafId = requestAnimationFrame(step);
@@ -34,6 +33,6 @@ export function createBarcodeDetectorFacade(options) {
         rafId = null;
       }
       isRunning = false;
-    }
+    },
   };
 }
