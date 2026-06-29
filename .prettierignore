@@ -1,0 +1,19 @@
+# build output
+dist/
+.netlify/
+
+# dependencies
+node_modules/
+
+# logs
+pnpm-debug.log*
+
+# lock files
+pnpm-lock.yaml
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store

@@ -1,4 +1,4 @@
-import { createBarcodeDetectorFacade } from "./native-detector.js";
+import { createBarcodeDetectorFacade } from './native-detector.js';
 
 // Abstraction layer for barcode detection so a fallback can be registered.
 let _fallbackFactory = null;
@@ -8,11 +8,11 @@ export function registerFallback(factory) {
 }
 
 export function supportsNative() {
-  return typeof window !== "undefined" && "BarcodeDetector" in window;
+  return typeof window !== 'undefined' && 'BarcodeDetector' in window;
 }
 
 export function hasFallback() {
-  return typeof _fallbackFactory === "function";
+  return typeof _fallbackFactory === 'function';
 }
 
 export async function createDetectorFacade(options = {}) {
@@ -27,7 +27,7 @@ export async function createDetectorFacade(options = {}) {
   // Minimal no-op detector to keep callers simple when no implementation exists.
   return {
     async detectFromVideo() {
-      console.warn("No barcode detector available; returning empty results.");
+      console.warn('No barcode detector available; returning empty results.');
       return [];
     },
     reset() {},

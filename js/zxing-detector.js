@@ -6,10 +6,13 @@
  */
 export function zxingFactory(options) {
   const hints = new Map();
-  hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, options.formats.map((format) => ZXing.BarcodeFormat[format.toUpperCase()]));
+  hints.set(
+    ZXing.DecodeHintType.POSSIBLE_FORMATS,
+    options.formats.map((format) => ZXing.BarcodeFormat[format.toUpperCase()])
+  );
   const detector = new ZXing.BrowserMultiFormatReader(hints);
   const detectFromVideo = async (video, callback) => {
-    detector.decodeFromVideoContinuously(video, "", (result, error) => {
+    detector.decodeFromVideoContinuously(video, '', (result, error) => {
       if (result) {
         callback([
           {
@@ -19,7 +22,7 @@ export function zxingFactory(options) {
         ]);
       }
       if (error && !(error instanceof ZXing.NotFoundException)) {
-        console.warn("ZXing detection error:", error);
+        console.warn('ZXing detection error:', error);
       }
     });
     return [];

@@ -1,0 +1,120 @@
+:root {
+  color-scheme: light dark;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Helvetica, Arial, sans-serif;
+  background: #f4f7f9;
+  color: #111;
+}
+.app-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+h1 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+#status {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+button {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+  min-width: 120px;
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 11px 30px rgba(0, 0, 0, 0.06);
+}
+.card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+.preview {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #000;
+}
+.viewfinder {
+  position: relative;
+  overflow: hidden;
+}
+.reticule {
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(77, 181, 122, 0.9);
+  border-radius: 14px;
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+  transform: scale(0.98);
+}
+.reticule.active {
+  opacity: 1;
+  transform: scale(1);
+}
+video {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 240px;
+  background: #000;
+}
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+.product-item:last-child {
+  border-bottom: none;
+}
+.small {
+  font-size: 0.9rem;
+  color: #666;
+}
+.update-banner {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  margin-top: 1rem;
+  background: #fff2d6;
+  border: 1px solid #f0d7a2;
+  border-radius: 14px;
+}
+.update-banner.show {
+  display: flex;
+}

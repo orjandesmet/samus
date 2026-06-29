@@ -3,29 +3,29 @@ import {
   hasFallback,
   registerFallback,
   supportsNative,
-} from "./barcode-detector.js";
-import { normalizeBarcode } from "./barcode-utils.js";
+} from './barcode-detector.js';
+import { normalizeBarcode } from './barcode-utils.js';
 import {
   bootstrapButtons,
   disableStartBtn,
   enableStartBtn,
-} from "./buttons.js";
-import { logDebug } from "./logger.js";
+} from './buttons.js';
+import { logDebug } from './logger.js';
 import {
   loadProducts,
   renderStoredProducts,
   saveProducts,
   showProduct,
-} from "./product-utils.js";
-import { setStatus } from "./status-bar.js";
-import { registerServiceWorker } from "./sw-updater.js";
+} from './product-utils.js';
+import { setStatus } from './status-bar.js';
+import { registerServiceWorker } from './sw-updater.js';
 
-import { zxingFactory } from "./zxing-detector.js";
+import { zxingFactory } from './zxing-detector.js';
 registerFallback(zxingFactory);
 
-const video = document.getElementById("video");
+const video = document.getElementById('video');
 
-const reticule = document.getElementById("reticule");
+const reticule = document.getElementById('reticule');
 
 let stream = null;
 let detectorFacade = null;
@@ -41,7 +41,7 @@ function resetScanTimeout() {
   }
   scanTimeoutId = window.setTimeout(() => {
     if (stream) {
-      setStatus("No barcode detected for 10 minutes. Camera stopped.");
+      setStatus('No barcode detected for 10 minutes. Camera stopped.');
       stopCamera();
     }
   }, SCAN_STOP_TIMEOUT);
@@ -54,7 +54,7 @@ function clearScanTimeout() {
   }
 }
 
-const SHORTCUT_NAME = "Neo";
+const SHORTCUT_NAME = 'Neo';
 
 function drawReticule(boundingBox) {
   if (!reticule || !boundingBox || !video.videoWidth || !video.videoHeight) {
@@ -74,18 +74,18 @@ function drawReticule(boundingBox) {
   reticule.style.top = `${top}px`;
   reticule.style.width = `${width}px`;
   reticule.style.height = `${height}px`;
-  reticule.classList.add("active");
+  reticule.classList.add('active');
 }
 
 function hideReticule() {
   if (!reticule) return;
-  reticule.classList.remove("active");
+  reticule.classList.remove('active');
 }
 
 function openShortcut(name) {
   const text = encodeURIComponent(name);
   const url = `shortcuts://run-shortcut?name=${SHORTCUT_NAME}&input=text&text=${text}`;
-  window.open(url, "_blank");
+  window.open(url, '_blank');
 }
 
 function handleCode(rawCode) {
@@ -111,10 +111,10 @@ function handleCode(rawCode) {
 
   const name = prompt(
     `Product not found for ${code}. Enter a name to save and run shortcut:`,
-    "",
+    ''
   );
   if (!name) {
-    setStatus("No product added. Ready.");
+    setStatus('No product added. Ready.');
     return;
   }
 
@@ -122,13 +122,13 @@ function handleCode(rawCode) {
   saveProducts(products);
   showProduct(products[code], code);
   openShortcut(products[code]);
-  setStatus("Product saved and shortcut launched.");
+  setStatus('Product saved and shortcut launched.');
 }
 
 function resultsDetected(results) {
   if (results.length) {
     const result = results[0];
-    console.log("Detected barcode:", result);
+    console.log('Detected barcode:', result);
     resetScanTimeout();
     handleCode(result.rawValue || result.rawData);
     drawReticule(result.boundingBox || result.boundingBox || null);
@@ -150,26 +150,26 @@ async function scanLoop() {
 
 async function startCamera() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    setStatus("Camera access is not supported in this browser.");
+    setStatus('Camera access is not supported in this browser.');
     return;
   }
 
   if (!supportsNative() && !hasFallback()) {
     setStatus(
-      "BarcodeDetector is not available. Enable Shape Detection or use a supported browser.",
+      'BarcodeDetector is not available. Enable Shape Detection or use a supported browser.'
     );
     return;
   }
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "user" },
+      video: { facingMode: 'user' },
     });
     video.srcObject = stream;
-    setStatus("Camera started. Point at a barcode.");
+    setStatus('Camera started. Point at a barcode.');
     disableStartBtn();
 
     detectorFacade = await createDetectorFacade({
-      formats: ["ean_13", "upc_a", "upc_e", "code_128", "code_39", "qr_code"],
+      formats: ['ean_13', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'],
     });
     scanLoop();
     resetScanTimeout();
@@ -192,10 +192,10 @@ function stopCamera() {
   clearScanTimeout();
 
   enableStartBtn();
-  setStatus("Camera stopped.");
+  setStatus('Camera stopped.');
 }
 
-window.addEventListener("load", () => {
+window.addEventListener('load', () => {
   bootstrapButtons(startCamera, stopCamera, setStatus);
   renderStoredProducts();
   registerServiceWorker();
