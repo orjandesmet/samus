@@ -2,7 +2,7 @@ import { createDetectorFacade, hasFallback, registerFallback, supportsNative } f
 import { normalizeBarcode } from './barcode-utils.js';
 import { bootstrapButtons, disableStartBtn, enableStartBtn } from './buttons.js';
 import { logDebug } from './logger.js';
-import { renderStoredProducts, saveProducts, showProduct } from './product-utils.js';
+import { loadProducts, renderStoredProducts, saveProducts, showProduct } from './product-utils.js';
 import { setStatus } from './status-bar.js';
 import { registerServiceWorker } from './sw-updater.js';
 
