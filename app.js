@@ -15,10 +15,32 @@ const reticule = document.getElementById('reticule');
 let stream = null;
 let detectorFacade = null;
 let rafId = null;
+let scanTimeoutId = null;
 let lastHandled = null;
 let lastHandledTime = 0;
 let waitingWorker = null;
 let refreshing = false;
+
+const SCAN_STOP_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+
+function resetScanTimeout() {
+  if (scanTimeoutId) {
+    clearTimeout(scanTimeoutId);
+  }
+  scanTimeoutId = window.setTimeout(() => {
+    if (stream) {
+      setStatus('No barcode detected for 10 minutes. Camera stopped.');
+      stopCamera();
+    }
+  }, SCAN_STOP_TIMEOUT);
+}
+
+function clearScanTimeout() {
+  if (scanTimeoutId) {
+    clearTimeout(scanTimeoutId);
+    scanTimeoutId = null;
+  }
+}
 
 const STORAGE_KEY = 'barcodeShortcutProducts';
 const SHORTCUT_NAME = 'Neo';
@@ -177,6 +199,7 @@ async function scanLoop() {
       if (results.length) {
         const result = results[0];
         console.log('Detected barcode:', result);
+        resetScanTimeout();
         handleCode(result.rawValue || result.rawData);
         drawReticule(result.boundingBox || result.boundingBox || null);
       } else {
@@ -212,6 +235,7 @@ async function startCamera() {
 
     detectorFacade = await createDetectorFacade({ formats: ['ean_13', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'] });
     scanLoop();
+    resetScanTimeout();
   } catch (error) {
     setStatus(`Camera error: ${error.message || error}`);
     logDebug(`startCamera error: ${error.message || error}`);
@@ -228,6 +252,8 @@ function stopCamera() {
     stream.getTracks().forEach(track => track.stop());
     stream = null;
   }
+
+  clearScanTimeout();
 
   if (detectorFacade) {
     detectorFacade.reset();
@@ -331,3 +357,4 @@ window.addEventListener('load', () => {
   renderStoredProducts();
   registerServiceWorker();
 });
+

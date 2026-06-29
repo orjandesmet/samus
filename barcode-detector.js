@@ -23,12 +23,12 @@ function createBarcodeDetectorFacade(options) {
     },
     reset() {
     }
-  }
+  };
 }
 
 export async function createDetectorFacade(options = {}) {
   if (supportsNative()) {
-    return new BarcodeDetector(options);
+    return createBarcodeDetectorFacade(options);
   }
 
   if (hasFallback()) {
@@ -37,9 +37,11 @@ export async function createDetectorFacade(options = {}) {
 
   // Minimal no-op detector to keep callers simple when no implementation exists.
   return {
-    async detect() {
+    async detectFromCanvas() {
       console.warn('No barcode detector available; returning empty results.');
       return [];
+    },
+    reset() {
     }
   };
 }
