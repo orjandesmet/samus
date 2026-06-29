@@ -18,7 +18,6 @@ let waitingWorker = null;
 let refreshing = false;
 
 const STORAGE_KEY = 'barcodeShortcutProducts';
-const CACHE_KEY = 'barcode-shortcut-pwa-v1.0';
 const SHORTCUT_NAME = 'Neo';
 
 function logDebug(message) {
@@ -268,6 +267,13 @@ function registerServiceWorker() {
     logDebug(`SW registration failed: ${error.message || error}`);
   });
 
+  navigator.serviceWorker.addEventListener('message', event => {
+    if (event.data && event.data.type === 'UPDATE_AVAILABLE') {
+      if (updateBanner) updateBanner.classList.add('show');
+      setStatus('Update available. Reload to refresh cached assets.');
+    }
+  });
+
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (refreshing) return;
     if (!waitingWorker) return;
@@ -290,6 +296,7 @@ if (reloadBtn) {
     waitingWorker.postMessage({ type: 'SKIP_WAITING' });
     hideUpdatePrompt();
     setStatus('Updating to latest version...');
+    window.location.reload();
   });
 }
 

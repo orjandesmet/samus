@@ -1,9 +1,10 @@
-const CACHE_NAME = 'barcode-shortcut-pwa-v1.0';
+const CACHE_VERSION = '1.0.0-beta.3';
+const CACHE_NAME = `barcode-shortcut-pwa-${CACHE_VERSION}`;
 const ASSETS = ['/', '/index.html', '/app.js', '/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
 });
 
@@ -18,12 +19,16 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-      const cloned = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
-      return response;
-    })).catch(() => {
-      return caches.match('/index.html');
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(event.request).then(response => {
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      }).catch(() => caches.match('/index.html'));
     })
   );
 });
