@@ -20,6 +20,7 @@ let refreshing = false;
 
 const STORAGE_KEY = 'barcodeShortcutProducts';
 const SHORTCUT_NAME = 'Neo';
+const DEBUG_MODE = new URLSearchParams(window.location.search).get('debug') === '1';
 
 function logDebug(message) {
   console.log(message);
@@ -243,7 +244,23 @@ function hideUpdatePrompt() {
   if (updateBanner) updateBanner.classList.remove('show');
 }
 
+function unregisterServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    registrations.forEach(registration => registration.unregister());
+  }).catch(error => {
+    logDebug(`SW unregister failed: ${error.message || error}`);
+  });
+}
+
 function registerServiceWorker() {
+  if (DEBUG_MODE) {
+    setStatus('Debug mode: service worker disabled.');
+    unregisterServiceWorker();
+    return;
+  }
+
   if (!('serviceWorker' in navigator)) {
     logDebug('Service worker not supported.');
     return;
