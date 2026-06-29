@@ -1,3 +1,5 @@
+import { createDetectorFacade, hasFallback, supportsNative } from './barcode-detector.js';
+
 const video = document.getElementById('video');
 const startBtn = document.getElementById('start');
 const stopBtn = document.getElementById('stop');
@@ -11,7 +13,7 @@ const reloadBtn = document.getElementById('reloadBtn');
 const reticule = document.getElementById('reticule');
 
 let stream = null;
-let detector = null;
+let detectorFacade = null;
 let rafId = null;
 let lastHandled = null;
 let lastHandledTime = 0;
@@ -146,7 +148,7 @@ function handleCode(rawCode) {
     return;
   }
 
-  const name = prompt('Product not found. Enter a name to save and run shortcut:', '');
+  const name = prompt(`Product not found for ${code}. Enter a name to save and run shortcut:`, '');
   if (!name) {
     setStatus('No product added. Ready.');
     return;
@@ -160,7 +162,7 @@ function handleCode(rawCode) {
 }
 
 async function scanLoop() {
-  if (!detector) return;
+  if (!detectorFacade) return;
 
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -171,8 +173,7 @@ async function scanLoop() {
     if (!stream) return;
     try {
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const bitmap = await createImageBitmap(canvas);
-      const results = await detector.detect(bitmap);
+      const results = await detectorFacade.detectFromCanvas(canvas);
       if (results.length) {
         const result = results[0];
         console.log('Detected barcode:', result);
@@ -197,11 +198,10 @@ async function startCamera() {
     return;
   }
 
-  if (!('BarcodeDetector' in window)) {
+  if (!supportsNative() && !hasFallback()) {
     setStatus('BarcodeDetector is not available. Enable Shape Detection or use a supported browser.');
     return;
   }
-
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
     video.srcObject = stream;
@@ -210,7 +210,7 @@ async function startCamera() {
     startBtn.disabled = true;
     stopBtn.disabled = false;
 
-    detector = new BarcodeDetector({ formats: ['ean_13', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'] });
+    detectorFacade = await createDetectorFacade({ formats: ['ean_13', 'upc_a', 'upc_e', 'code_128', 'code_39', 'qr_code'] });
     scanLoop();
   } catch (error) {
     setStatus(`Camera error: ${error.message || error}`);
@@ -227,6 +227,10 @@ function stopCamera() {
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
     stream = null;
+  }
+
+  if (detectorFacade) {
+    detectorFacade.reset();
   }
 
   startBtn.disabled = false;
