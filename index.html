@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1b4d3e" />
+    <link rel="manifest" href="manifest.json" />
+    <title>Barcode Shortcut PWA</title>
+    <style>
+      :root{color-scheme: light dark}
+      body{margin:0;font-family:system-ui,Helvetica,Arial,sans-serif;background:#f4f7f9;color:#111}
+      .app-shell{max-width:720px;margin:0 auto;padding:1rem}
+      header{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+      h1{font-size:1.4rem;margin:0}
+      #status{margin-top:.75rem;font-size:.95rem;color:#444}
+      .controls{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
+      button{padding:.7rem 1rem;border:1px solid #ccc;border-radius:10px;background:#fff;color:#111;cursor:pointer;min-width:120px}
+      button:disabled{opacity:.55;cursor:not-allowed}
+      .card{background:#fff;border-radius:16px;padding:1rem;margin-top:1rem;box-shadow:0 11px 30px rgba(0,0,0,.06)}
+      .card h2{margin:0 0 .75rem;font-size:1rem}
+      .preview{position:relative;border-radius:18px;overflow:hidden;background:#000}
+      video{display:block;width:100%;height:auto;min-height:240px;background:#000}
+      .product-item{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid #eee}
+      .product-item:last-child{border-bottom:none}
+      .small{font-size:.9rem;color:#666}
+      .update-banner{display:none;align-items:center;justify-content:space-between;gap:.75rem;padding:.85rem 1rem;margin-top:1rem;background:#fff2d6;border:1px solid #f0d7a2;border-radius:14px}
+      .update-banner.show{display:flex}
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header>
+        <div>
+          <h1>Barcode Shortcut PWA</h1>
+          <div class="small">Front camera scan + local product lookup</div>
+        </div>
+      </header>
+
+      <div class="preview card">
+        <video id="video" autoplay playsinline muted></video>
+      </div>
+
+      <div class="controls">
+        <button id="start">Start camera</button>
+        <button id="stop" disabled>Stop camera</button>
+        <button id="clear">Clear stored products</button>
+      </div>
+
+      <div id="status">Idle</div>
+      <div id="debug" class="small"></div>
+
+      <div id="updateBanner" class="update-banner">
+        <div>Update available. Reload to use the latest version.</div>
+        <button id="reloadBtn">Reload</button>
+      </div>
+
+      <div class="card">
+        <h2>Current product</h2>
+        <div id="productInfo" class="small">No product scanned yet.</div>
+      </div>
+
+      <div class="card">
+        <h2>Stored products</h2>
+        <div id="storedProducts" class="small">No products stored yet.</div>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
