@@ -26,7 +26,7 @@ export async function createDetectorFacade(options = {}) {
 
   // Minimal no-op detector to keep callers simple when no implementation exists.
   return {
-    async detectFromCanvas() {
+    async detectFromVideo() {
       console.warn('No barcode detector available; returning empty results.');
       return [];
     },

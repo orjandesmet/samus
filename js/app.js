@@ -15,7 +15,6 @@ const reticule = document.getElementById('reticule');
 
 let stream = null;
 let detectorFacade = null;
-let rafId = null;
 let scanTimeoutId = null;
 let lastHandled = null;
 let lastHandledTime = 0;
@@ -111,36 +110,27 @@ function handleCode(rawCode) {
   setStatus('Product saved and shortcut launched.');
 }
 
+function resultsDetected(results) {
+  if (results.length) {
+    const result = results[0];
+    console.log('Detected barcode:', result);
+    resetScanTimeout();
+    handleCode(result.rawValue || result.rawData);
+    drawReticule(result.boundingBox || result.boundingBox || null);
+  } else {
+    hideReticule();
+  }
+}
+
 async function scanLoop() {
   if (!detectorFacade) return;
 
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  canvas.width = video.videoWidth || 640;
-  canvas.height = video.videoHeight || 480;
-
-  async function step() {
-    if (!stream) return;
-    try {
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const results = await detectorFacade.detectFromCanvas(canvas);
-      if (results.length) {
-        const result = results[0];
-        console.log('Detected barcode:', result);
-        resetScanTimeout();
-        handleCode(result.rawValue || result.rawData);
-        drawReticule(result.boundingBox || result.boundingBox || null);
-      } else {
-        hideReticule();
-      }
-    } catch (error) {
-      logDebug(`Scan error: ${error.message || error}`);
-      hideReticule();
-    }
-    rafId = requestAnimationFrame(step);
+  try {
+    detectorFacade.detectFromVideo(video,resultsDetected);
+  } catch (error) {
+    logDebug(`Scan error: ${error.message || error}`);
+    hideReticule();
   }
-
-  step();
 }
 
 async function startCamera() {
@@ -156,7 +146,7 @@ async function startCamera() {
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
     video.srcObject = stream;
-    await video.play();
+    // await video.play();
     setStatus('Camera started. Point at a barcode.');
     disableStartBtn();
 
@@ -170,9 +160,9 @@ async function startCamera() {
 }
 
 function stopCamera() {
-  if (rafId) {
-    cancelAnimationFrame(rafId);
-    rafId = null;
+
+  if (detectorFacade) {
+    detectorFacade.reset();
   }
 
   if (stream) {
@@ -181,10 +171,6 @@ function stopCamera() {
   }
 
   clearScanTimeout();
-
-  if (detectorFacade) {
-    detectorFacade.reset();
-  }
 
   enableStartBtn();
   setStatus('Camera stopped.');
