@@ -1,11 +1,10 @@
-import { registerFallback } from './barcode-detector.js';
 
 /**
  * Creates a ZXing barcode reader instance.
  * @param {{formats: string[]}} options 
  * @returns 
  */
-function zxingFactory(options) {
+export function zxingFactory(options) {
   const detector = new ZXing.BrowserMultiFormatReader();
   
   return {
@@ -43,8 +42,6 @@ function zxingFactory(options) {
     }
   }
 }
-
-registerFallback(zxingFactory);
 
 async function canvasToBlob(canvas) {
   return new Promise((resolve, reject) => {

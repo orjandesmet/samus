@@ -1,3 +1,5 @@
+import { createBarcodeDetectorFacade } from './native-detector.js';
+
 // Abstraction layer for barcode detection so a fallback can be registered.
 let _fallbackFactory = null;
 
@@ -11,19 +13,6 @@ export function supportsNative() {
 
 export function hasFallback() {
   return typeof _fallbackFactory === 'function';
-}
-
-function createBarcodeDetectorFacade(options) {
-  const detector = new BarcodeDetector(options);
-
-  return {
-    async detectFromCanvas(canvas) {
-      const bitmap = await createImageBitmap(canvas);
-      return detector.detect(bitmap);
-    },
-    reset() {
-    }
-  };
 }
 
 export async function createDetectorFacade(options = {}) {
