@@ -6,48 +6,118 @@ body {
   font-family: system-ui, Helvetica, Arial, sans-serif;
   background: black;
   color: white;
+  max-height: 100svh;
+  overflow: clip;
 }
-.app-shell {
-  position: relative;
-}
-header {
-  position: absolute;
+* {
+  box-sizing: border-box;
 }
 h1,
 h2 {
   margin: 0;
 }
+.app-shell {
+  position: relative;
+}
 #status {
-  margin-top: 0.75rem;
   text-align: center;
 }
-#hud-bottom {
+.small {
+  font-size: 0.9rem;
+}
+
+/* HUD (Heads-Up Display) styles */
+.hud {
   position: absolute;
-  bottom: 1rem;
+  opacity: 0.8;
+  --hud-color: #3b5c6d;
+  --hud-color-light: #607c86;
+  --hud-color-dark: #101718;
+  color: var(--hud-color);
+}
+.hud--text-stroke {
+  -webkit-text-stroke: 1px var(--hud-color-light);
+}
+.hud.hud--top {
+  top: 0;
   left: 1rem;
   right: 1rem;
 }
+.hud.hud--top .hud-content {
+  border: 5px solid;
+  border-top: none;
+  border-bottom-right-radius: 50% 100%;
+  border-bottom-left-radius: 50% 100%;
+  text-align: center;
+  padding-block: 0.5rem;
+  background: var(--hud-color-dark);
+  box-shadow: 0px 2px 3px 2px var(--hud-color-light);
+}
+.hud.hud--bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .controls {
-  width: 100svw;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 50% 1fr;
+}
+.controls__left,
+.controls__right {
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  border: 5px solid;
+  border-bottom: none;
+  background: var(--hud-color-dark);
+}
+.controls__left {
+  display: grid;
+  border-top-right-radius: 100% 75%;
+  border-left: none;
+  justify-content: flex-start;
+  box-shadow: -1px -2px 3px 2px var(--hud-color-light);
+}
+.controls__right {
+  border-top-left-radius: 100% 75%;
+  border-right: none;
+  justify-content: flex-end;
+  box-shadow: 1px -2px 3px 2px var(--hud-color-light);
   display: flex;
-  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.controls button {
+  padding: 0.7rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--hud-color-light);
+  background: var(--hud-color-light);
+  color: var(--hud-color-dark);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.controls button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.messages {
+  display: flex;
   justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding-block: 0.5rem;
 }
+
+/* Stored products panel styles */
 .stored-products-panel {
-  position: absolute;
-  left: 50%;
-  bottom: 7.5rem;
-  transform: translateX(-50%);
-  width: min(92vw, 32rem);
-  z-index: 5;
+  background: rgba(17, 17, 17, 0.5);
+  color: #e68545;
+  border-radius: 4px;
+  box-shadow: 0 0 8px #e68545;
 }
-.stored-products-card {
-  background: rgba(17, 17, 17, 0.96);
-  color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+.stored-products-panel button {
+  background: #371807;
+  color: #bc9770;
+  border: 3px double #d67d45;
 }
 .card-title-row {
   display: flex;
@@ -59,10 +129,7 @@ h2 {
 .card-title-row h2 {
   font-size: 1rem;
 }
-.secondary {
-  background: #2f2f2f;
-  color: #fff;
-  border-color: #4d4d4d;
+.close-btn {
   padding: 0.45rem 0.7rem;
 }
 .product-item {
@@ -71,41 +138,27 @@ h2 {
   align-items: center;
   gap: 0.75rem;
   padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #bc9770;
 }
-.product-item:last-child {
-  border-bottom: none;
-}
-.product-item .product-meta {
-  min-width: 0;
+.product-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 }
 .product-item .small {
-  color: #cfcfcf;
+  color: #999;
 }
 .remove-product-btn {
   flex-shrink: 0;
   padding: 0.35rem 0.6rem;
   font-size: 0.85rem;
 }
-button {
-  padding: 0.7rem 1rem;
-  border: 1px solid #ccc;
-  background: #fff;
-  color: #111;
-}
-button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.card {
-  background: #fff;
-  padding: 1rem;
-  margin-top: 1rem;
-}
+
+/* Viewfinder and reticule styles */
 .viewfinder {
   margin: auto;
   width: fit-content;
   height: fit-content;
+  max-height: 100svh;
+  max-width: 100svw;
 }
 .reticule {
   position: absolute;
@@ -127,11 +180,11 @@ video {
   height: 100svh;
   max-height: 100svh;
   max-width: 100svw;
+  background: url('https://placehold.co/640x480') center center / cover
+    no-repeat;
 }
-.small {
-  font-size: 0.9rem;
-  color: #666;
-}
+
+/* Update banner styles */
 .update-banner {
   display: none;
   position: absolute;

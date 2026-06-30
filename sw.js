@@ -1,6 +1,13 @@
 const CACHE_VERSION = '1.0.0-beta.3';
 const CACHE_NAME = `barcode-shortcut-pwa-${CACHE_VERSION}`;
-const ASSETS = ['/', '/index.html', '/js/*.js', '/manifest.json', '/icon.svg'];
+const ASSETS = [
+  '/',
+  '/index.html',
+  '/js/*.js',
+  '/manifest.json',
+  '/icon.svg',
+  'https://unpkg.com/@zxing/library@latest/umd/index.min.js',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

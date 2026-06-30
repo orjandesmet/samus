@@ -16,17 +16,14 @@ export function bootstrapButtons(startCamera, stopCamera, setStatus) {
 
   if (showProductsBtn && storedProductsPanel) {
     showProductsBtn.addEventListener('click', () => {
-      const isVisible = !storedProductsPanel.hidden;
-      storedProductsPanel.hidden = isVisible;
-      if (!isVisible) {
-        renderStoredProducts(loadProducts());
-      }
+      storedProductsPanel.showModal();
+      renderStoredProducts(loadProducts());
     });
   }
 
   if (closeProductsBtn && storedProductsPanel) {
     closeProductsBtn.addEventListener('click', () => {
-      storedProductsPanel.hidden = true;
+      storedProductsPanel.close();
     });
   }
 

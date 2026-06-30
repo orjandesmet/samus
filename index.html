@@ -10,10 +10,10 @@
   </head>
   <body>
     <div class="app-shell">
-      <header>
-        <div>
-          <h1>Barcode Shortcut PWA</h1>
-          <div class="small">Front camera scan + local product lookup</div>
+      <header class="hud hud--top hud--text-stroke">
+        <div class="hud-content">
+          <h1>Scan Visor</h1>
+          <div class="small">Scan and add to grocery list</div>
         </div>
       </header>
 
@@ -22,27 +22,30 @@
         <div id="reticule" class="reticule" aria-hidden="true"></div>
       </div>
 
-      <div id="hud-bottom">
-        <div id="status">Idle</div>
-        <div id="debug" class="small"></div>
-
+      <div class="hud hud--bottom">
         <div class="controls">
-          <button id="start">Start camera</button>
-          <button id="stop" disabled>Stop camera</button>
-          <button id="showProductsBtn" type="button">Stored products</button>
-        </div>
-
-        <div id="storedProductsPanel" class="stored-products-panel" hidden>
-          <div class="card stored-products-card">
-            <div class="card-title-row">
-              <h2>Stored products</h2>
-              <button id="closeProductsBtn" class="secondary" type="button">
-                Close
-              </button>
-            </div>
-            <div id="storedProducts" class="small">No products stored yet.</div>
+          <div class="controls__left">
+            <button id="start">Start</button>
+            <button id="stop" disabled>Stop</button>
+          </div>
+          <div class="messages hud--text-stroke">
+            <div id="status">Idle</div>
+            <div id="debug" class="small"></div>
+          </div>
+          <div class="controls__right">
+            <button id="showProductsBtn" type="button">Stored products</button>
           </div>
         </div>
+
+        <dialog id="storedProductsPanel" class="stored-products-panel">
+          <div class="card-title-row">
+            <h2>Stored products</h2>
+            <button id="closeProductsBtn" class="close-btn" type="button">
+              Close
+            </button>
+          </div>
+          <div id="storedProducts" class="small">No products stored yet.</div>
+        </dialog>
       </div>
 
       <div id="updateBanner" class="update-banner">
