@@ -1,10 +1,10 @@
 {
-  "name": "Barcode Shortcut PWA",
-  "short_name": "BarcodeShortcut",
+  "name": "Scan Visor",
+  "short_name": "ScanVisor",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1b4d3e",
+  "background_color": "#000000",
+  "theme_color": "#607c86",
   "icons": [
     {
       "src": "icon.svg",
