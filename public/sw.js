@@ -1,4 +1,4 @@
-const CACHE_VERSION = '1.0.0-beta.3';
+const CACHE_VERSION = '1.0.0-beta.4';
 const CACHE_NAME = `barcode-shortcut-pwa-${CACHE_VERSION}`;
 const ASSETS = [
   '/',
