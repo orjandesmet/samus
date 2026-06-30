@@ -19,8 +19,20 @@ h2 {
 .app-shell {
   position: relative;
 }
-#status {
-  text-align: center;
+.app-shell:has(#stop:disabled) {
+  background: url('/img/visor-tile.png') repeat;
+}
+.app-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background: radial-gradient(
+    80% 60%,
+    rgba(23, 49, 9, 0.138) 50%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
 }
 .small {
   font-size: 0.9rem;
@@ -34,6 +46,7 @@ h2 {
   --hud-color-light: #607c86;
   --hud-color-dark: #101718;
   color: var(--hud-color);
+  z-index: 100;
 }
 .hud--text-stroke {
   -webkit-text-stroke: 1px var(--hud-color-light);
@@ -105,6 +118,13 @@ h2 {
   align-items: flex-end;
   gap: 0.5rem;
   padding-block: 0.5rem;
+}
+#status {
+  text-align: center;
+  background: var(--hud-color-dark);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 2px solid;
 }
 
 /* Stored products panel styles */
@@ -180,8 +200,8 @@ video {
   height: 100svh;
   max-height: 100svh;
   max-width: 100svw;
-  background: url('https://placehold.co/640x480') center center / cover
-    no-repeat;
+  /* background: url('https://placehold.co/640x480') center center / cover */
+  /* no-repeat; */
 }
 
 /* Update banner styles */
