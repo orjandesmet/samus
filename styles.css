@@ -20,7 +20,7 @@ h2 {
   position: relative;
 }
 .app-shell:has(#stop:disabled) {
-  background: url('/img/visor-tile.png') repeat;
+  background: url('/visor-tile.png') repeat;
 }
 .app-shell::after {
   content: '';
@@ -114,8 +114,9 @@ h2 {
 }
 .messages {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   gap: 0.5rem;
   padding-block: 0.5rem;
 }
