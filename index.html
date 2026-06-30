@@ -29,7 +29,19 @@
         <div class="controls">
           <button id="start">Start camera</button>
           <button id="stop" disabled>Stop camera</button>
-          <!-- <button id="clear">Clear stored products</button> -->
+          <button id="showProductsBtn" type="button">Stored products</button>
+        </div>
+
+        <div id="storedProductsPanel" class="stored-products-panel" hidden>
+          <div class="card stored-products-card">
+            <div class="card-title-row">
+              <h2>Stored products</h2>
+              <button id="closeProductsBtn" class="secondary" type="button">
+                Close
+              </button>
+            </div>
+            <div id="storedProducts" class="small">No products stored yet.</div>
+          </div>
         </div>
       </div>
 
