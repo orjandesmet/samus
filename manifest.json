@@ -3,7 +3,9 @@
   "short_name": "Scan Visor",
   "description": "A Progressive Web App",
   "start_url": "/",
-  "display": "fullscreen",
+  "display_override": ["fullscreen", "minimal-ui"],
+  "display": "standalone",
+  "orientation": "landscape",
   "background_color": "#ffffff",
   "theme_color": "#607c86",
   "icons": [
