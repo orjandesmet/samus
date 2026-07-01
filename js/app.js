@@ -18,7 +18,6 @@ import {
   showProduct,
 } from './product-utils.js';
 import { setStatus } from './status-bar.js';
-import { registerServiceWorker } from './sw-updater.js';
 
 import { zxingFactory } from './zxing-detector.js';
 registerFallback(zxingFactory);
@@ -198,5 +197,4 @@ function stopCamera() {
 window.addEventListener('load', () => {
   bootstrapButtons(startCamera, stopCamera, setStatus);
   renderStoredProducts();
-  registerServiceWorker();
 });

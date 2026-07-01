@@ -204,22 +204,3 @@ video {
   /* background: url('https://placehold.co/640x480') center center / cover */
   /* no-repeat; */
 }
-
-/* Update banner styles */
-.update-banner {
-  display: none;
-  position: absolute;
-  top: 50%;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  margin: 1rem;
-  background: #fff2d6;
-  color: black;
-  border: 1px solid #f0d7a2;
-  border-radius: 14px;
-}
-.update-banner.show {
-  display: flex;
-}
